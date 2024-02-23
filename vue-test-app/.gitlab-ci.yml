@@ -5,14 +5,6 @@ stages:
   - push
   - deploy
 
-#test_code:
-#  stage: test
-#  allow_failure: true
-#  image: node:14-alpine
-#  script: 
-#    - npm install -g editorconfig
-#    - yarn install
-#    - yarn run test
 sonarqube-check:
   stage: sonarqube-check
   image: 

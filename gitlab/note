@@ -18,6 +18,7 @@ sudo usermod -aG docker gitlab-runner
 Register Runner on Gitlab
 https://docs.gitlab.com/runner/register/index.html
 
+#Remember to set Pipeline variables
 
 #Install Argocd
 kubectl create namespace argocd
