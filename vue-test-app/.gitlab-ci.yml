@@ -1,0 +1,87 @@
+stages:
+  - test
+  - sonarqube-check
+  - build
+  - push
+  - deploy
+
+#test_code:
+#  stage: test
+#  allow_failure: true
+#  image: node:14-alpine
+#  script: 
+#    - npm install -g editorconfig
+#    - yarn install
+#    - yarn run test
+sonarqube-check:
+  stage: sonarqube-check
+  image: 
+    name: sonarsource/sonar-scanner-cli:5.0
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script: 
+    #- sonar-scanner
+    - /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+  allow_failure: true
+  only:
+    - merge_requests
+    - master
+    - main
+    - develop
+sonarqube-vulnerability-report:
+  stage: sonarqube-check
+  script:
+    - 'curl -u "${SONAR_TOKEN}:" "${SONAR_HOST_URL}/api/issues/gitlab_sast_export?projectKey=root_vue-test-app_57542df4-22a5-4a08-bc4b-ce9c8a8a81f3&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
+  allow_failure: true
+  only:
+    - merge_requests
+    - master
+    - main
+    - develop
+  artifacts:
+    expire_in: 1 day
+    reports:
+      sast: gl-sast-sonar-report.json
+  dependencies:
+    - sonarqube-check
+build_docker_image:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
+  script:
+    - echo "Generated image tag is $IMAGE_TAG"
+    - docker build -t giddy87/vue:webapp-$CI_COMMIT_SHORT_SHA .
+push_docker_image:
+  stage: push
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
+  before_script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  script:
+    - docker push giddy87/vue:webapp-$CI_COMMIT_SHORT_SHA
+    #- docker rmi giddy87/vue:webapp-$CI_COMMIT_SHORT_SHA
+
+deploy_to_dev:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
+  environment: dev
+  before_script:
+    - git config --global user.email "pipeline_user@ipnxnigeria.net"
+    - git config --global user.name "pipeline"
+  script:
+    - git remote set-url origin http://${PIPELINE_TOKEN}@localhost/root/gitops.git
+    - git clone http://pipeline:${PIPELINE_TOKEN}@localhost/root/gitops.git
+    - cd gitops
+    - sed -i 's/vue:webapp-.*/'vue:webapp-"$CI_COMMIT_SHORT_SHA"'/g' dev/deployment.yaml
+    - cat dev/deployment.yaml
+    - git add dev/deployment.yaml
+    - git commit -m "Updated vue test app Dev env k8s manifest files"
+    - git push
+
