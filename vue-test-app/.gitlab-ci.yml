@@ -65,7 +65,7 @@ deploy_to_dev:
     - if: $CI_COMMIT_BRANCH == 'main'
   environment: dev
   before_script:
-    - git config --global user.email "pipeline_user@ipnxnigeria.net"
+    - git config --global user.email "pipeline_user@thebulb.com"
     - git config --global user.name "pipeline"
   script:
     - git remote set-url origin http://${PIPELINE_TOKEN}@localhost/root/gitops.git
