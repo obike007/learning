@@ -5,10 +5,11 @@ services:
     container_name: gitlab
     restart: always
     hostname: 'gitlab'
+    network_mode: host
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         # Add any other gitlab.rb configuration here, each on its own line
-        external_url 'http://localhost'
+        external_url 'http://host.docker.internal'
         puma['worker_processes'] = 0
         sidekiq['max_concurrency'] = 10
         prometheus_monitoring['enable'] = false
