@@ -19,7 +19,13 @@ spec:
           ports:
             - containerPort: 80 
           imagePullPolicy: Always
-      #imagePullSecrets: 
-      #  - name: docker-cred 
+          volumeMounts:
+          - mountPath: /etc/test
+            name: test-mnty
+      volumes:
+      - name: test-mnty
+        hostPath:
+          path: /etc/vue
+          type: Directory
          
       
