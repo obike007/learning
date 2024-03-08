@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: prometheus
+  labels:
+    component: collector
+    name: prometheus
+  namespace: monitoring
+spec:
+  replicas: 1
+  serviceName: prometheus
+  selector:
+    matchLabels:
+      component: collector
+      name: prometheus
+  template:
+    metadata:
+      labels:
+        component: collector
+        name: prometheus
+    spec:
+      serviceAccountName: prometheus
+      containers:
+        - name: prometheus
+          args:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --storage.tsdb.retention.time=15d
+            - --storage.tsdb.path=/data
+          image: prom/prometheus:v2.45.0-rc.1
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9090
+            timeoutSeconds: 5  
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+            - name: data
+              mountPath: /data
+          ports:
+            - containerPort: 9090
+          resources:
+            limits: 
+              memory: 1000Mi
+              cpu: 500m
+            requests:
+              memory: 500Mi
+              cpu: 200m
+      volumes:
+        - name: config
+          configMap:
+            name: prometheus-config    
+        - name: data
+          emptyDir: {}
+
+
+
+

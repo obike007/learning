@@ -3,3 +3,5 @@
 container_memory_usage_bytes{name=""}
 
 sum(rate(container_cpu_usage_seconds_total{name=""}[5m])* 100)
+
+sum(rate(node_cpu_seconds_total{job="Monitoring Host",mode="user"}[10s])) * 100
