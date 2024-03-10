@@ -51,6 +51,8 @@ jobs:
           cd learning
           git checkout -b update-dev-env || true
           cd jobs
+          git status
           git add deployment.yaml
+          git status
           git commit -m "Update Vue.js test app Dev env k8s manifest files"
           git push origin update-dev-env
