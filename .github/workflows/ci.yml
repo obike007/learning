@@ -1,0 +1,55 @@
+name: workflows
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_docker_image:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: |
+          echo "Generated image tag is ${{ github.sha }}" && ls
+          docker build -t obike007/vue:webapp-${{ github.sha }} -f ./vue-test-app/Dockerfile ./vue-test-app
+
+  push_image_to_registry:
+    runs-on: self-hosted
+    needs: build_docker_image
+    steps:
+      - name: Login to Docker Registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push Docker Image to Registry
+        run: docker push obike007/vue:webapp-${{ github.sha }}
+
+  deploy_to_dev:
+    runs-on: self-hosted
+    needs: push_image_to_registry
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Update Kubernetes Manifests
+        run: |
+          sed -i 's/vue:webapp-.*/vue:webapp-${{ github.sha }}/g' ./workflows/deployment.yaml
+          cat ./workflows/deployment.yaml
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "pipeline_user@thebulb.com"
+          git config --global user.name "pipeline"
+
+      #- name: Clone workflows Repository
+        #run: git clone https://username:${{ secrets.PIPELINE_TOKEN }}@github.com/obike007/learning.git
+             
+      #- name: Commit and Push Changes
+        #run: |
+          #cd workflows
+          #git checkout -b update-dev-env || true
+          #git add deployment.yaml
+          #git commit -m "Update Vue.js test app Dev env k8s manifest files"
+          #git push origin update-dev-env
