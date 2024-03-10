@@ -49,7 +49,7 @@ jobs:
       - name: Commit and Push Changes
         run: |
           cd learning
-          #git checkout -b update-dev-env || true
+          git checkout -b update-dev-env || true
           cd jobs
           git status
           git add deployment.yaml
