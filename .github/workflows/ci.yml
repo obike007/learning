@@ -48,8 +48,8 @@ jobs:
              
       - name: Commit and Push Changes
         run: |
-          cd /jobs/deployment.yaml
+          cd ./jobs/deployment.yaml
           git checkout -b update-dev-env || true
-          git add /jobs/deployment.yaml
+          git add ./jobs/deployment.yaml
           git commit -m "Update Vue.js test app Dev env k8s manifest files"
           git push origin update-dev-env
