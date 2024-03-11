@@ -43,7 +43,7 @@ jobs:
           
       - name: Update Kubernetes Manifests
         run: |
-          sed -i 's/vue:webapp-.*/vue:webapp-"$github.sha"/g' jobs/deployment.yaml
+          sed -i 's/vue:webapp-.*/vue:webapp-"$github.sha"/g' ./deployment.yaml
           cat deployment.yaml
 
       - name: Commit and Push Changes
