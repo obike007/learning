@@ -45,5 +45,5 @@ jobs:
           sed -i "s/vue:webapp-.*/vue:webapp-${{ github.sha }}/g" deployment.yaml
           cat deployment.yaml
           git add deployment.yaml
-          git commit -m "Update Vue.js test app Dev env k8s manifest files"
+          git commit -m "Update Vue.js test app Dev env k8s manifest file"
           git push origin main
