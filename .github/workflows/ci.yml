@@ -37,18 +37,12 @@ jobs:
         run: |
           git config --global user.email "pipeline_user@thebulb.com"
           git config --global user.name "pipeline"
-
-      - name: Clone jobs Repository
-        run: git clone https://username:${{ secrets.PIPELINE_TOKEN }}@github.com/obike007/jobs.git
           
       - name: Update Kubernetes Manifests
         run: |
-          cd jobs
-          cat deployment.yaml
+          git clone https://username:${{ secrets.PIPELINE_TOKEN }}@github.com/obike007/jobs.git
           sed -i "s/vue:webapp-.*/vue:webapp-${{ github.sha }}/g" deployment.yaml
-
-      - name: Commit and Push Changes
-        run: |
+          cat deployment.yaml
           git add deployment.yaml
           git commit -m "Update Vue.js test app Dev env k8s manifest files"
           git push origin main
