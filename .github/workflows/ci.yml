@@ -33,19 +33,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Update Kubernetes Manifests
-        run: |
-          sed -i 's/vue:webapp-.*/vue:webapp-${{ github.sha }}/g' ./workflows/deployment.yaml
-          cat ./workflows/deployment.yaml
-
       - name: Configure Git
         run: |
           git config --global user.email "pipeline_user@thebulb.com"
           git config --global user.name "pipeline"
 
-      - name: Clone workflows Repository
+      - name: Clone jobs Repository
         run: git clone https://username:${{ secrets.PIPELINE_TOKEN }}@github.com/obike007/jobs.git
-             
+          
+      - name: Update Kubernetes Manifests
+        run: |
+          sed -i 's/vue:webapp-.*/vue:webapp-"$github.sha"/g' jobs/deployment.yaml
+          cat jobs/deployment.yaml
+
       - name: Commit and Push Changes
         run: |
           cd jobs
