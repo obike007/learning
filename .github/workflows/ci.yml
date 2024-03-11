@@ -40,12 +40,11 @@ jobs:
 
       - name: Clone jobs Repository
         run: git clone https://username:${{ secrets.PIPELINE_TOKEN }}@github.com/obike007/jobs.git
-         cd jobs
           
       - name: Update Kubernetes Manifests
         run: |
-          sed -i 's/vue:webapp-.*/vue:webapp-"$github.sha"/g' deployment.yaml
           cat deployment.yaml
+          sed -i 's/vue:webapp-.*/vue:webapp-"$github.sha"/g' deployment.yaml
 
       - name: Commit and Push Changes
         run: |
