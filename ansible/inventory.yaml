@@ -5,16 +5,11 @@ all:
     ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}' 
     ansible_become_method: sudo
     ansible_become_pass: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
+    ansible_become: yes
 debian:
-  ansible_become: yes
   hosts:
     ubuntu1:
     ubuntu2:
     ubuntu3: 
-centos:
-  hosts:
-    centos1:
-    centos2:
-    centos3:
 defaults:
   host_key_checking = False
