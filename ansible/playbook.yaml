@@ -2,11 +2,6 @@
 - name: Set up Debian web servers
   hosts: debian
   tasks:
-  - name: Upgrade all apt packages
-    apt:
-      force_apt_get: yes
-      upgrade: dist
-    become: true
   - name: Install nginx 
     apt: 
       name: 
@@ -21,6 +16,11 @@
       src: ./index.html
       dest: /tmp/hosts_backup
       mode: '0644'
+  - name: Upgrade all apt packages
+    apt:
+      force_apt_get: yes
+      upgrade: dist
+    become: true
 - name: Set up Centos Web servers
   hosts: centos
   #remote_user: root
