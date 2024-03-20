@@ -23,6 +23,7 @@
     become: true
 - name: Set up Centos Web servers
   hosts: centos
+  remote_user: root
   #remote_user: root
   tasks:
   - name: Install Apache Package 
