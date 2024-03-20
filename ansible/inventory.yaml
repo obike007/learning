@@ -1,6 +1,6 @@
 #Default location is /etc/ansible/hosts 
 ansible_user: ansible 
-ansible_password: password
+ansible_password: "password"
 debian:
   hosts:
     ubuntu1:
