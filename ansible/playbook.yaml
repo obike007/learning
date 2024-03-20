@@ -14,7 +14,7 @@
   - name: Copy file hosts with permissions
     ansible.builtin.copy:
       src: ./index.html
-      dest: /tmp/hosts_backup
+      dest: /var/www/html
       mode: '0644'
   - name: Upgrade all apt packages
     apt:
