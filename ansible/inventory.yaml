@@ -3,14 +3,14 @@
 #ansible_password: "password"
 debian:
   ansible_user: "ansible" 
-  #ansible_password: "password"
+  ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
   hosts:
     ubuntu1:
     ubuntu2:
     ubuntu3: 
 centos:
   ansible_user: "ansible" 
-  #ansible_password: "password"
+  ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
   hosts:
     centos1:
     centos2:
