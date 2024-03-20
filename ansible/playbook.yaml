@@ -21,18 +21,3 @@
       force_apt_get: yes
       upgrade: dist
     become: true
-- name: Set up Centos Web servers
-  hosts: centos
-  remote_user: root
-  #remote_user: root
-  tasks:
-  - name: Install Apache Package 
-    yum: 
-      name: 
-      - httpd 
-      #- firewalld 
-  - name: Start Apache
-    service: 
-      name: httpd 
-      state: started 
-      enabled: yes 
