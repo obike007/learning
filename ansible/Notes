@@ -1,2 +1,8 @@
+#Install sshpass
+apt-get Install sshkeypass
+
 #Test connectivity to your hosts
 ansible -i ./inventory.yaml centos -m ping 
+
+#Test Playbook
+ansible-playbook -i inventory.yaml playbook.yaml --check
