@@ -16,4 +16,5 @@ centos:
     centos1:
     centos2:
     centos3:
-
+defaults:
+  host_key_checking = False
