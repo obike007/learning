@@ -11,5 +11,3 @@ debian:
     ubuntu1:
     ubuntu2:
     ubuntu3: 
-defaults:
-  host_key_checking = False
