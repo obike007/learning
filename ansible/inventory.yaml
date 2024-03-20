@@ -3,6 +3,9 @@ all:
   vars:
     ansible_user: "ansible" 
     ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
+    ansible_become: yes 
+    ansible_become_method: sudo
+    ansible_become_pass: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
 debian:
   hosts:
     ubuntu1:

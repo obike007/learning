@@ -1,0 +1,2 @@
+#Test connectivity to your hosts
+ansible -i ./inventory.yaml centos -m ping 
