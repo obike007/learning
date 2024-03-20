@@ -1,0 +1,37 @@
+---
+- name: Set up Debian web servers
+  hosts: debian
+  tasks:
+  - name: Upgrade all apt packages
+    apt:
+      force_apt_get: yes
+      upgrade: dist
+    become: true
+  - name: Install nginx 
+    apt: 
+      name: 
+      - nginx 
+  - name: Start nginx 
+    service: 
+      name: nginx 
+      state: started 
+      enabled: true 
+  - name: Copy file hosts with permissions
+    ansible.builtin.copy:
+      src: ./index.html
+      dest: /tmp/hosts_backup
+      mode: '0644'
+- name: Set up Centos Web servers
+  hosts: centos
+  #remote_user: root
+  tasks:
+  - name: Install Apache Package 
+    yum: 
+      name: 
+      - httpd 
+      #- firewalld 
+  - name: Start Apache
+    service: 
+      name: httpd 
+      state: started 
+      enabled: yes 

@@ -4,7 +4,7 @@ https://docs.gitlab.com/ee/install/docker.html
 
 
 #Fixing VM count issue with elastic search on sonarqube
-#https://stackoverflow.com/questions/51445846/elasticsearch-max-virtual-memory-areas-vm-max-map-count-65530-is-too-low-inc
+https://stackoverflow.com/questions/51445846/elasticsearch-max-virtual-memory-areas-vm-max-map-count-65530-is-too-low-inc
 
 
 

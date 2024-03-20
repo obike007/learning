@@ -1,0 +1,12 @@
+#Default location is /etc/ansible/hosts 
+debian:
+  hosts:
+    ubuntu1:
+    ubuntu2:
+    ubuntu3: 
+centos:
+  hosts:
+    centos1:
+    centos2:
+    centos3:
+    
