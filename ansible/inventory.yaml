@@ -1,16 +1,14 @@
 #Default location is /etc/ansible/hosts 
-#ansible_user: "ansible" 
-#ansible_password: "password"
+all:
+  vars:
+    ansible_user: "ansible" 
+    ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
 debian:
-  ansible_user: "ansible" 
-  ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
   hosts:
     ubuntu1:
     ubuntu2:
     ubuntu3: 
 centos:
-  ansible_user: "ansible" 
-  ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'
   hosts:
     centos1:
     centos2:
