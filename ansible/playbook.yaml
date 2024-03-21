@@ -1,0 +1,23 @@
+---
+- name: Set up Debian web servers
+  hosts: debian
+  tasks:
+  - name: Install nginx 
+    apt: 
+      name: 
+      - nginx 
+  - name: Start nginx 
+    service: 
+      name: nginx 
+      state: started 
+      enabled: true 
+  - name: Copy file hosts with permissions
+    ansible.builtin.copy:
+      src: ./index.html
+      dest: /var/www/html
+      mode: '0644'
+  - name: Upgrade all apt packages
+    apt:
+      force_apt_get: yes
+      upgrade: dist
+    become: true
