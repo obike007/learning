@@ -5,11 +5,10 @@ services:
     container_name: gitlab
     restart: always
     hostname: 'gitlab'
-    network_mode: host
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         # Add any other gitlab.rb configuration here, each on its own line
-        external_url 'http://host.docker.internal'
+        external_url 'http://localhost'
         puma['worker_processes'] = 0
         sidekiq['max_concurrency'] = 10
         prometheus_monitoring['enable'] = false
@@ -24,17 +23,17 @@ services:
       - '$GITLAB_HOME/logs:/var/log/gitlab'
       - '$GITLAB_HOME/data:/var/opt/gitlab'
     shm_size: '256m'
-  runner:
-    image: gitlab/gitlab-runner:latest
-    restart: always
-    container_name: gitlab_runner
-    depends_on:
-     - gitlab
-    environment:
-      - CI_SERVER_URL=http://gitlab/
-    volumes:
-      - /srv/gitlab-runner/config:/etc/gitlab-runner
-      - /var/run/docker.sock:/var/run/docker.sock:rw
+  #runner:
+  #  image: gitlab/gitlab-runner:latest
+  #  restart: always
+  #  container_name: gitlab_runner
+  #  depends_on:
+  #   - gitlab
+  #  environment:
+  #    - CI_SERVER_URL=http://gitlab/
+  #  volumes:
+  #    - /srv/gitlab-runner/config:/etc/gitlab-runner
+  #    - /var/run/docker.sock:/var/run/docker.sock:rw
   sonarqube:
     image: sonarqube:community
     depends_on:
