@@ -1,0 +1,8 @@
+cert.pem
+.terraform*
+id_rsa
+id_rsa.pub
+*tar.gz
+kubeseal
+node_modules
+.terraform
